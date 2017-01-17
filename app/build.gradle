@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: "org.sonarqube"
 
 android {
     compileSdkVersion 25
@@ -27,3 +28,13 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     testCompile 'junit:junit:4.12'
 }
+
+sonarqube {
+    properties {
+        //property "sonar.projectName", "PROJECT NAME"
+        //property "sonar.projectKey", "PROJECT KEY"
+        //androidVariant 'fullDebug'
+        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+    }
+}
+
