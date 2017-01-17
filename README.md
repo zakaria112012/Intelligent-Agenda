@@ -6,4 +6,4 @@ Application android permettant l'optimisation intermodal des trajets de votre ag
 
 
 
-https://travis-ci.org/ooussem/Intelligent-Agenda.svg?branch=master
+[![Build Status](https://travis-ci.org/ooussem/Intelligent-Agenda.svg?branch=master)](https://travis-ci.org/ooussem/Intelligent-Agenda)
