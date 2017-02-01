@@ -37,5 +37,6 @@ android:
 script:
     - chmod +x ./gradlew
     - ./gradlew assembleAndroidTest
+    - ./gradlew connectedAndroidTest coveralls
 notifications:
     email: false
