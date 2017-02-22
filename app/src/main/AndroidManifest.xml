@@ -17,7 +17,7 @@
         </activity>
         <activity android:name=".signInUp.SignInUp.LoginActivity" />
         <activity android:name=".signInUp.Profile" />
-        <activity android:name=".ResetPasswordActivity"></activity>
+        <activity android:name=".SignInUp.ResetPasswordActivity"></activity>
     </application>
 
 </manifest>
