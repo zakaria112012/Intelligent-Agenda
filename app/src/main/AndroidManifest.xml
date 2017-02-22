@@ -16,7 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".signInUp.SignInUp.LoginActivity" />
-        <activity android:name=".signInUp.Profile"></activity>
+        <activity android:name=".signInUp.Profile" />
+        <activity android:name=".ResetPasswordActivity"></activity>
     </application>
 
 </manifest>
