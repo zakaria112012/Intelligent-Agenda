@@ -109,10 +109,7 @@ public class ActivityDay extends AppCompatActivity {
 								sa.notifyDataSetChanged();
 								lv.setAdapter(sa);
 
-								titreEven.setText(titre.getText().toString());
-								descriEven.setText(description.getText().toString());
-								debutEven.setText(start.getText().toString());
-								finEven.setText(end.getText().toString());
+
 
 
 								/*Event event = new Event(titre.getText().toString(), debut.getText().toString(), fin.getText().toString(), description.getText().toString());
@@ -148,14 +145,27 @@ public class ActivityDay extends AppCompatActivity {
 		});
 
 
-		
+		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
 
+/*
+				EditText description = (EditText)view.findViewById(R.id.editTextDescription);
+				EditText titre = (EditText)view.findViewById(R.id.editTextTitle);
+				EditText start = (EditText)view.findViewById(R.id.editTextStart);
+				EditText  end = (EditText)view.findViewById(R.id.editTextEnd);
 
-
-
-
+				titreEven.setText(titre.getText().toString());
+				descriEven.setText(description.getText().toString());
+				debutEven.setText(start.getText().toString());
+				finEven.setText(end.getText().toString());
+*/
 			}
+		});
+
+
+	}
 		}
 
 
