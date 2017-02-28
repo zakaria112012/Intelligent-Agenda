@@ -44,18 +44,19 @@
 
     </LinearLayout>
 
+
     <TextView
         android:text="Titre"
         android:id="@+id/activity_title_event"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_toEndOf="@+id/linearLayout"
-        android:layout_marginBottom="192dp"
         android:clickable="true"
         android:textSize="18sp"
         android:textColorLink="?android:attr/colorActivatedHighlight"
-        android:textColor="@color/colorEvent"/>
-
+        android:textColor="@color/colorEvent"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/activity_day_button_less"
+        android:layout_marginStart="38dp" />
 
     <TextView
         android:text="Date end"
@@ -66,10 +67,9 @@
         android:textSize="18sp"
         android:textColorLink="?android:attr/colorActivatedHighlight"
         android:textColor="@color/colorEvent"
-        android:layout_marginTop="110dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/activity_date_start_event"
-        android:layout_toEndOf="@+id/linearLayout"/>
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/activity_date_start_event"
+        android:layout_alignStart="@+id/activity_title_event" />
 
     <TextView
         android:text="Date start"
@@ -80,11 +80,9 @@
         android:textSize="18sp"
         android:textColorLink="?android:attr/colorActivatedHighlight"
         android:textColor="@color/colorEvent"
+        android:layout_marginTop="57dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="52dp"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/linearLayout"/>
-
+        android:layout_alignStart="@+id/activity_date_end_event" />
 
     <TextView
         android:text="Description"
@@ -95,10 +93,8 @@
         android:textSize="18sp"
         android:textColorLink="?android:attr/colorActivatedHighlight"
         android:textColor="@color/colorEvent"
-        android:layout_marginTop="30dp"
         android:layout_below="@+id/activity_date_end_event"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/linearLayout"/>
+        android:layout_alignStart="@+id/activity_date_end_event" />
 
 
 </RelativeLayout>

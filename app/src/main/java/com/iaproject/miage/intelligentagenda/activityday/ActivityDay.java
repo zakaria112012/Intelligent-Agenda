@@ -6,12 +6,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.iaproject.miage.intelligentagenda.R;
 import com.iaproject.miage.intelligentagenda.feature.event.model.Agenda;
@@ -20,6 +18,8 @@ import com.iaproject.miage.intelligentagenda.feature.event.model.Event;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.iaproject.miage.intelligentagenda.R.layout.dialog;
 
 public class ActivityDay extends AppCompatActivity {
 	ImageButton buttonAdd;
@@ -58,13 +58,18 @@ public class ActivityDay extends AppCompatActivity {
 
 		buttonAdd = (ImageButton) findViewById(R.id.activity_day_button_add);
 		buttonAdd.setOnClickListener(new View.OnClickListener() {
+
+
 			@Override
 			public void onClick(View v) {
 
 
 
-				View view = LayoutInflater.from(ActivityDay.this).inflate(R.layout.dialog, null);
+				View view = LayoutInflater.from(ActivityDay.this).inflate(dialog, null);
 				AlertDialog.Builder Builder = new AlertDialog.Builder(ActivityDay.this);
+
+
+
 
 
 				Builder.setMessage("Creer votre evenement")
@@ -74,35 +79,32 @@ public class ActivityDay extends AppCompatActivity {
 							public void onClick(DialogInterface dialogInterface, int wich) {
 								// operation à effectuées
 
-								EditText titre = (EditText) findViewById(R.id.editTextTitle);
+
+
 								 EditText description = (EditText) findViewById(R.id.editTextDescription);
+								 EditText titre = (EditText) findViewById(R.id.editTextTitle);
+
+
 
 								//Log.i("", titre.getText().toString() + " " + description.getText().toString());
 
 
-								Toast.makeText(getApplicationContext(),"voilàààà", Toast.LENGTH_SHORT).show();
+								//Toast.makeText(getApplicationContext(),"bravo", Toast.LENGTH_SHORT).show();
 
-
-
-
-
-
-								/*
 								map_personn = new HashMap<String, Object>();
-
-								map_personn.put("titre", titre);
-								map_personn.put("description", description);
+								map_personn.put("titre", "evenement"+i);
+								map_personn.put("description", "descitpion" +i);
 								i++;
 								list.add(map_personn);
 								sa.notifyDataSetChanged();
 								lv.setAdapter(sa);
 
-								Event event = new Event(titre.getText().toString(), debut.getText().toString(), fin.getText().toString(), description.getText().toString());
+								/*Event event = new Event(titre.getText().toString(), debut.getText().toString(), fin.getText().toString(), description.getText().toString());
 								Agenda agenda = new Agenda("test");
-								agenda.addEvent(event);
+								agenda.addEvent(event);*/
 
 
-									*/
+
 
 							}
 						})
@@ -112,31 +114,13 @@ public class ActivityDay extends AppCompatActivity {
 				dialog.show();
 
 
-			/*	Button b = (Button) findViewById(R.id.btest);
 
-
-			b.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-					/*	Event event = new Event(titre.getText().toString(),debut.getText().toString(),fin.getText().toString(),description.getText().toString());
-						Agenda agenda = new Agenda("test");
-						agenda.addEvent(event);
-
-
-
-
-					}
-				});
-
-				/*mBuilder.setView(mview);
-				AlertDialog dialog = mBuilder.create();
-				dialog.show();*/
 
 
 			}
 		});
 
-		lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+		/*lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
 				list.remove(position);
@@ -145,10 +129,41 @@ public class ActivityDay extends AppCompatActivity {
 			}
 
 
-		});
+		});*/
 
-	}
-}
+		/*lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+				AlertDialog.Builder builder = new AlertDialog.Builder(ActivityDay.this);
+				builder.setCancelable(true);
+				builder.setTitle("voulez vous supprimer ?");
+				builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+
+					public void onClick(DialogInterface dialog, int which) {
+						// How to remove the selected item?
+						list.remove(position);
+						sa.notifyDataSetChanged();
+
+			}
+		});*/
+
+
+	/* 	lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+										   final int position, long id) {
+
+
+					}
+
+				});*/
+
+
+			}
+		}
+
+
 
 
 
