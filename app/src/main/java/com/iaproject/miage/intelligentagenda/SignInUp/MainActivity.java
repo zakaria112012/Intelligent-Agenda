@@ -39,12 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-       /* if (firebaseAuth.getCurrentUser() == null) {
-            finish();
-            startActivity(new Intent(getApplicationContext(), Profile.class));
-            //dfgbh
-
-        }*/
+      
 
 
 
