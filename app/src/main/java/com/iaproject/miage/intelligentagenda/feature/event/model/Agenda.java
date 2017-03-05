@@ -1,6 +1,7 @@
 package com.iaproject.miage.intelligentagenda.feature.event.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -13,7 +14,7 @@ public class Agenda {
 	public String titleAgenda;
 	public List<Event> listEvent;
 
-	public Agenda(String titleAgenda) {
+	public Agenda(String titleAgenda){
 		this.titleAgenda = titleAgenda;
 		this.listEvent = new ArrayList<>();
 	}
@@ -25,11 +26,14 @@ public class Agenda {
 	 */
 	public boolean addEvent(Event e){
 		boolean result = false;
-		try{
-			if(!checkOverlapEvent(e)) {
+		try {
+			if(this.listEvent.size() == 0) return this.listEvent.add(e);
+			else if (!checkOverlapEvent(e)) {
 				result = this.listEvent.add(e);
+				Collections.sort(listEvent);
 			}
-		}catch (Exception exp){
+		}
+		catch (Exception exp){
 
 		}
 		return result;
@@ -53,11 +57,19 @@ public class Agenda {
 	/***
 	 * Vérifie si deux évenements ne sont pas parallèles
 	 */
-	public boolean checkOverlapEvent(Event e){
-		boolean result = false;
-		for(Event event : listEvent){
-			//if(e.end.before(event.start)) return false;
+	public boolean checkOverlapEvent(Event eventAdded){
+		boolean result = true;
+		Event eventBefore = listEvent.get(0);
+		if(eventAdded.dateStart.after(eventBefore.dateEnd)) return false;
+
+		for(Event event : listEvent.subList(1,listEvent.size())){
+			if(eventAdded.dateStart.after(eventBefore.dateEnd)){
+				if(eventAdded.dateStart.before(event.dateEnd) && eventAdded.dateEnd.before(event.dateEnd))
+					result = false;
+				eventBefore = event;
+			}
 		}
+
 		return result;
 	}
 
