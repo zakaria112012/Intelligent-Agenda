@@ -14,13 +14,10 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.iaproject.miage.intelligentagenda.R;
 import com.iaproject.miage.intelligentagenda.feature.event.model.Agenda;
 import com.iaproject.miage.intelligentagenda.feature.event.model.Event;
+import com.iaproject.miage.intelligentagenda.firebase.Services;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,9 +43,6 @@ public class ActivityDay extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_day);
 
-		final FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
-		final FirebaseDatabase database=FirebaseDatabase.getInstance();
-		final DatabaseReference databaseReference = database.getReference();
 
 
 
@@ -127,13 +121,14 @@ public class ActivityDay extends AppCompatActivity {
 
 
 
+								Event event = new Event(tit.getText().toString(), start.getText().toString(), end.getText().toString(), descrip.getText().toString());
+								Services sc=new Services();
+								sc.addEvent(event);
+
+								Agenda agenda=new Agenda("programme");
+								agenda.addEvent(event);
 
 
-
-
-								Event event = new Event(tit.getText().toString(), start.getText().toString(), end.getText().toString(),descrip.getText().toString());
-								FirebaseUser user=firebaseAuth.getCurrentUser();
-								databaseReference.child("users").child(user.getUid()).setValue(event);
 
 
 

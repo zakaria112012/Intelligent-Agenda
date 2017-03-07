@@ -1,7 +1,6 @@
 package com.iaproject.miage.intelligentagenda.feature.event.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -28,10 +27,10 @@ public class Agenda {
 		boolean result = false;
 		try {
 			if(this.listEvent.size() == 0) return this.listEvent.add(e);
-			else if (!checkOverlapEvent(e)) {
+			/*else if (!checkOverlapEvent(e)) {
 				result = this.listEvent.add(e);
 				Collections.sort(listEvent);
-			}
+			}*/
 		}
 		catch (Exception exp){
 
@@ -44,7 +43,7 @@ public class Agenda {
 	 * @param e : c'est l'évenement selectionné
 	 * @return
 	 */
-	public boolean deleteEvent(Event e){
+	/*public boolean deleteEvent(Event e){
 		boolean result = false;
 		try{
 			result = this.listEvent.remove(e);
@@ -57,7 +56,7 @@ public class Agenda {
 	/***
 	 * Vérifie si deux évenements ne sont pas parallèles
 	 */
-	public boolean checkOverlapEvent(Event eventAdded){
+	/*public boolean checkOverlapEvent(Event eventAdded){
 		boolean result = true;
 		Event eventBefore = listEvent.get(0);
 		if(eventAdded.dateStart.after(eventBefore.dateEnd)) return false;
@@ -73,5 +72,5 @@ public class Agenda {
 		return result;
 	}
 
-
+*/
 }
