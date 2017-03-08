@@ -21,15 +21,15 @@ public class Agenda {
 
 	/***
 	 * Permet d'ajouter un évenement dans la liste
-	 * @param e : c'est l'évenement qui sera ajouté
+	 * @param event : c'est l'évenement qui sera ajouté
 	 * @return
 	 */
-	public boolean addEvent(Event e){
+	public boolean addEvent(Event event){
 		boolean result = false;
 		try {
-			if(this.listEvent.size() == 0) return this.listEvent.add(e);
-			else if (!checkOverlapEvent(e)) {
-				result = this.listEvent.add(e);
+			if(this.listEvent.size() == 0) return this.listEvent.add(event);
+			else if (!checkOverlapEvent(event)) {
+				result = this.listEvent.add(event);
 				Collections.sort(listEvent);
 			}
 		}
@@ -41,13 +41,13 @@ public class Agenda {
 
 	/***
 	 * Permet de supprimer un évenement de la liste
-	 * @param e : c'est l'évenement selectionné
+	 * @param event : c'est l'évenement selectionné
 	 * @return
 	 */
-	public boolean deleteEvent(Event e){
+	public boolean deleteEvent(Event event){
 		boolean result = false;
 		try{
-			result = this.listEvent.remove(e);
+			result = this.listEvent.remove(event);
 		}catch (Exception exp){
 
 		}
@@ -57,16 +57,20 @@ public class Agenda {
 	/***
 	 * Vérifie si deux évenements ne sont pas parallèles
 	 */
-	public boolean checkOverlapEvent(Event eventAdded){
+	public boolean checkOverlapEvent(Event otherEvent){
 		boolean result = true;
-		Event eventBefore = listEvent.get(0);
-		if(eventAdded.dateStart.after(eventBefore.dateEnd)) return false;
+		Event previousEvent = this.listEvent.get(0);
+		if(otherEvent.dateEnd.before(previousEvent.dateStart) || (this.listEvent.size()==1
+				&& otherEvent.dateStart.after(previousEvent.dateEnd)))
+			return false;
+		else if (otherEvent.equals(previousEvent)) return true;
 
-		for(Event event : listEvent.subList(1,listEvent.size())){
-			if(eventAdded.dateStart.after(eventBefore.dateEnd)){
-				if(eventAdded.dateStart.before(event.dateEnd) && eventAdded.dateEnd.before(event.dateEnd))
-					result = false;
-				eventBefore = event;
+		for(Event nextEvent : this.listEvent.subList(1,this.listEvent.size())){
+			if(nextEvent.equals(otherEvent)) return true;
+			if((otherEvent.dateStart.after(previousEvent.dateEnd) && (otherEvent.dateEnd.before(nextEvent.dateEnd)))
+					|| otherEvent.dateStart.after(nextEvent.dateEnd)){
+				result = false;
+				previousEvent = nextEvent;
 			}
 		}
 

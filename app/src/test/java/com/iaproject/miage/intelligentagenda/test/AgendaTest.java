@@ -9,7 +9,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -30,6 +29,7 @@ public class AgendaTest {
 	Event e1;
 	Event e2;
 	Event e3;
+	Event e4;
 	List<Event> eventList;
 
 
@@ -43,18 +43,19 @@ public class AgendaTest {
 		e2Start = new GregorianCalendar(2017, 2, 14, 9, 00);
 		e2End = new GregorianCalendar(2017, 2, 14, 12, 00);
 
-		e3Start = new GregorianCalendar(2017, 2, 14, 9, 00);
-		e3End = new GregorianCalendar(2017, 2, 14, 18, 00);
+		e3Start = new GregorianCalendar(2017, 4, 14, 13, 00);
+		e3End = new GregorianCalendar(2017, 4, 14, 14, 00);
 
-		e1 = new Event("Rendez vous pro",e1Start,e1End, "Rendez vous pour un entretien");
-		e2 = new Event("Rendez vous RH",e2Start,e2End, "Rendez vous pour un candidat");
-		e3 = new Event("Evenement",e3Start,e3End, "Rendez vous pour un candidat 2");
+		e4Start = new GregorianCalendar(2017, 2, 15, 9, 00);
+		e4End = new GregorianCalendar(2017, 2, 15, 12, 00);
 
-		eventList = new ArrayList<>();
-		eventList.add(e1);
-		eventList.add(e2);
-		eventList.add(e3);
+		e1 = new Event("Evenement 1","Nanterre",e1Start,e1End, "Rendez vous pour un entretien 1");
+		e2 = new Event("Evenement 2","Nanterre",e2Start,e2End, "Rendez vous pour un entretien 2");
+		e3 = new Event("Evenement 3","Nanterre",e3Start,e3End, "Rendez vous pour un entretien 3");
+		e4 = new Event("Evenement 4","Nanterre",e4Start,e4End, "Rendez vous pour un entretien 4");
+
 	}
+
 
 	@After
 	public void tearDown() throws Exception {
@@ -71,11 +72,31 @@ public class AgendaTest {
 		eventList = null;
 	}
 
+
+
+
 	@Test
 	public void addEvent() throws Exception {
-		Assert.assertSame(true,agenda.addEvent(e1));
-		Assert.assertSame(true,agenda.addEvent(e2));
-//		Assert.assertSame(false,agenda.addEvent(e3));
+		Assert.assertEquals(1,e3.compareTo(e1));
+		Assert.assertEquals(1,e3.compareTo(e2));
+
+		Assert.assertEquals(true,agenda.addEvent(e1));
+		Assert.assertEquals(true,agenda.addEvent(e2));
+		Assert.assertEquals(false,agenda.addEvent(e1));
+		Assert.assertEquals(false,agenda.addEvent(e1));
+		Assert.assertEquals(false,agenda.addEvent(e2));
+		Assert.assertEquals(true,agenda.addEvent(e3));
+		Assert.assertEquals(true,agenda.addEvent(e4));
+		Assert.assertEquals(false,agenda.addEvent(e3));
+
+//		agenda.addEvent(e3);
+
+
+		System.out.println("Size = " +agenda.listEvent.size());
+
+		for(Event event: agenda.listEvent.subList(0,agenda.listEvent.size())){
+			System.out.println(event.title+ ", hd = " +event.dateStart.getTime()+ ", he = " +event.dateEnd.getTime());
+		}
 	}
 
 
@@ -85,6 +106,8 @@ public class AgendaTest {
 //		boolean testDel = agenda.listEvent.contains(e1);
 //		Assert.assertEquals(false, testDel);
 //	}
+
+
 
 	@Test
 	public void checkOverlapEvent() throws Exception {
