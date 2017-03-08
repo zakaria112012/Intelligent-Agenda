@@ -18,13 +18,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.iaproject.miage.intelligentagenda.Profil.Profile;
 import com.iaproject.miage.intelligentagenda.R;
 
-
 public class MainActivity extends AppCompatActivity {
+
     public FirebaseAuth firebaseAuth;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -32,28 +31,19 @@ public class MainActivity extends AppCompatActivity {
         final EditText editTextMail = (EditText) findViewById(R.id.editTextEmail);
         final EditText editTextPasword = (EditText) findViewById(R.id.editTextPassword);
         final TextView textViewSignin = (TextView) findViewById(R.id.textViewSignin);
-
-
-
         firebaseAuth = FirebaseAuth.getInstance();
-
-
-
-      
-
-
-
-
-
-
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (view == buttonRegister) {
+
+
+
                     registerUser();
                 }
-            }
+
+
             private void registerUser() {
+
                 String email = editTextMail.getText().toString().trim();
                 String password = editTextPasword.getText().toString().trim();
                 if (TextUtils.isEmpty(email)) {
@@ -68,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
+
+
                 progressDialog.setMessage("Registring user ... ");
                 progressDialog.show();
                 progressDialog.setCancelable(true);
@@ -78,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressDialog.dismiss();
                                 if (task.isSuccessful()) {
-
                                     startActivity(new Intent(getApplicationContext(), Profile.class));
                                     Toast.makeText(MainActivity.this, "Registred Succesfully", Toast.LENGTH_SHORT).show();
                                 } else {
@@ -87,22 +78,15 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
             }
+
         });
+
         textViewSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 startActivity(new Intent(MainActivity.this,LoginActivity.class));
-
-
-
             }
-
         });
-
-
-
-
 
     }
 

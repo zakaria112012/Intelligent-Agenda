@@ -22,7 +22,7 @@ import com.iaproject.miage.intelligentagenda.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-
+    Dao dao = new Dao(this);
     public FirebaseAuth firebaseAuth;
 
 
@@ -55,14 +55,15 @@ public class LoginActivity extends AppCompatActivity {
         buttonSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (view == buttonSignin) {
+                String email = editTextMail.getText().toString().trim();
+                String password = editTextPasword.getText().toString().trim();
+
                     UserLogin();
-                }
 
 
             }
 
-            private void UserLogin() {
+           private void UserLogin() {
 
                 String email = editTextMail.getText().toString().trim();
                 String password = editTextPasword.getText().toString().trim();
