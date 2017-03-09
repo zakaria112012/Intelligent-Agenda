@@ -26,10 +26,22 @@ public class AgendaTest {
 	GregorianCalendar e3End;
 	GregorianCalendar e4Start;
 	GregorianCalendar e4End;
+	GregorianCalendar e5Start;
+	GregorianCalendar e5End;
+	GregorianCalendar e6Start;
+	GregorianCalendar e6End;
+	GregorianCalendar e7Start;
+	GregorianCalendar e7End;
+	GregorianCalendar e8Start;
+	GregorianCalendar e8End;
 	Event e1;
 	Event e2;
 	Event e3;
 	Event e4;
+	Event e5;
+	Event e6;
+	Event e7;
+	Event e8;
 	List<Event> eventList;
 
 
@@ -37,7 +49,7 @@ public class AgendaTest {
 	public void setUp() throws Exception {
 		agenda = new Agenda("My agenda");
 
-		e1Start = new GregorianCalendar(2017, 2, 13, 14, 20);
+		e1Start = new GregorianCalendar(2017, 2, 13, 14, 00);
 		e1End = new GregorianCalendar(2017, 2, 13, 15, 00);
 
 		e2Start = new GregorianCalendar(2017, 2, 14, 9, 00);
@@ -49,10 +61,30 @@ public class AgendaTest {
 		e4Start = new GregorianCalendar(2017, 2, 15, 9, 00);
 		e4End = new GregorianCalendar(2017, 2, 15, 12, 00);
 
+		e5Start = new GregorianCalendar(2017, 5, 15, 9, 00);
+		e5End = new GregorianCalendar(2017, 5, 15, 12, 00);
+
+		e6Start = new GregorianCalendar(2017, 5, 15, 14, 30);
+		e6End = new GregorianCalendar(2017, 5, 15, 15, 00);
+
+		e7Start = new GregorianCalendar(2017, 2, 13, 12, 30);
+		e7End = new GregorianCalendar(2017, 2, 13, 14, 15);
+
+		e8Start = new GregorianCalendar(2017, 5, 15, 13, 30);
+		e8End = new GregorianCalendar(2017, 5, 15, 14, 45);
+
 		e1 = new Event("Evenement 1","Nanterre",e1Start,e1End, "Rendez vous pour un entretien 1");
 		e2 = new Event("Evenement 2","Nanterre",e2Start,e2End, "Rendez vous pour un entretien 2");
 		e3 = new Event("Evenement 3","Nanterre",e3Start,e3End, "Rendez vous pour un entretien 3");
 		e4 = new Event("Evenement 4","Nanterre",e4Start,e4End, "Rendez vous pour un entretien 4");
+		e5 = new Event("Evenement 5","Nanterre",e5Start,e5End, "Rendez vous pour un entretien 5");
+		e6 = new Event("Evenement 6","Nanterre",e6Start,e6End, "Rendez vous pour un entretien 6");
+		e7 = new Event("Evenement 7","Nanterre",e7Start,e7End, "Rendez vous pour un entretien 7");
+		e8 = new Event("Evenement 8","Nanterre",e8Start,e8End, "Rendez vous pour un entretien 8");
+		e1.isDateStartStrongness = false;
+		e5.isDateEndStrongness=false;
+		e6.isDateStartStrongness = false;
+
 
 	}
 
@@ -88,8 +120,10 @@ public class AgendaTest {
 		Assert.assertEquals(true,agenda.addEvent(e3));
 		Assert.assertEquals(true,agenda.addEvent(e4));
 		Assert.assertEquals(false,agenda.addEvent(e3));
-
-//		agenda.addEvent(e3);
+		Assert.assertEquals(true,agenda.addEvent(e5));
+		Assert.assertEquals(true,agenda.addEvent(e6));
+		Assert.assertEquals(true,agenda.addEvent(e7));
+		Assert.assertEquals(true,agenda.addEvent(e8));
 
 
 		System.out.println("Size = " +agenda.listEvent.size());
