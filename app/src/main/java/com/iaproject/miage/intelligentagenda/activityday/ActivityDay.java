@@ -11,16 +11,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.iaproject.miage.intelligentagenda.R;
+import com.iaproject.miage.intelligentagenda.database.daoDatabase;
 import com.iaproject.miage.intelligentagenda.feature.event.model.Agenda;
 import com.iaproject.miage.intelligentagenda.feature.event.model.Event;
-import com.iaproject.miage.intelligentagenda.database.daoDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,6 +28,13 @@ import java.util.List;
 import static com.iaproject.miage.intelligentagenda.R.layout.dialog;
 
 public class ActivityDay extends AppCompatActivity {
+
+
+
+
+
+
+
 	ImageButton buttonAdd;
 	Agenda agenda;
 	Event event;
@@ -46,37 +49,28 @@ public class ActivityDay extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_day);
 
-		final FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
-		final FirebaseDatabase database=FirebaseDatabase.getInstance();
-		final DatabaseReference databaseReference = database.getReference();
-
-		if(firebaseAuth.getCurrentUser()==null){
+		/*if(firebaseAuth.getCurrentUser()==null){
 
 			finish();
-		}
-
-
-
-
+		}*/
 
 		list = new ArrayList<>();
 		String[] from = new String[]{"titre", "description"};
 		int[] to = new int[]{R.id.activity_title_event, R.id.activity_title_descip};
-
 
 		sa = new SimpleAdapter(this, list, R.layout.list_event, from, to);
 		lv = (ListView) findViewById(R.id.listView);
 		lv.setAdapter(sa);
 
 
-		final EditText titre = (EditText) findViewById(R.id.editTextTitle);
+		/*final EditText titre = (EditText) findViewById(R.id.editTextTitle);
 		final EditText debut = (EditText) findViewById(R.id.editTextStart);
 		final EditText fin = (EditText) findViewById(R.id.editTextEnd);
 		final EditText description = (EditText) findViewById(R.id.editTextDescription);
 		final TextView titreEven = (TextView) findViewById(R.id.activity_title_event);
 		final TextView debutEven = (TextView) findViewById(R.id.activity_date_start_event);
 		final TextView finEven = (TextView) findViewById(R.id.activity_date_end_event);
-		final TextView descriEven = (TextView) findViewById(R.id.activity_desc_event);
+		final TextView descriEven = (TextView) findViewById(R.id.activity_desc_event);*/
 
 
 
@@ -134,9 +128,10 @@ public class ActivityDay extends AppCompatActivity {
 
 
 								Event event = new Event(tit.getText().toString(), start.getText().toString(), end.getText().toString(), descrip.getText().toString());
-								Agenda agenda=new Agenda("programme");
+
 								daoDatabase daoDatabase=new daoDatabase();
 								daoDatabase.addEvent(event,agenda);
+								Agenda agenda=new Agenda("programme");
 								agenda.addEvent(event);
 
 
