@@ -18,10 +18,10 @@ import com.iaproject.miage.intelligentagenda.profil.Profile;
 
 public class DAOAuthetification {
 
-    public Activity MyActivity ;
+    public Activity myActivity;
 
     public DAOAuthetification(Activity myActivity) {
-        MyActivity = myActivity;
+        this.myActivity = myActivity;
     }
 
     public FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -31,26 +31,26 @@ public class DAOAuthetification {
 
         if (TextUtils.isEmpty(email)) {
             // email vide
-           Toast.makeText(MyActivity.getApplicationContext(), "Veuillez rentrer votre email SVP", Toast.LENGTH_SHORT).show();
+           Toast.makeText(myActivity.getApplicationContext(), "Veuillez rentrer votre email SVP", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (TextUtils.isEmpty(password)) {
             //password vide
-           Toast.makeText(MyActivity.getApplicationContext(), "Veuillez rentrer votre mot de passe SVP", Toast.LENGTH_SHORT).show();
+           Toast.makeText(myActivity.getApplicationContext(), "Veuillez rentrer votre mot de passe SVP", Toast.LENGTH_SHORT).show();
             return;
         }
         firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(MyActivity,new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(myActivity,new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                      //  progressDialog.dismiss();
+
                         if (task.isSuccessful()) {
-                           Toast.makeText(MyActivity.getApplicationContext(), "Bravo", Toast.LENGTH_SHORT).show();
+                           Toast.makeText(myActivity.getApplicationContext(), "Bravo", Toast.LENGTH_SHORT).show();
                             //finish();
-                            MyActivity.startActivity(new Intent(MyActivity.getApplicationContext(), Profile.class));
+                            myActivity.startActivity(new Intent(myActivity.getApplicationContext(), Profile.class));
                         } else {
-                           Toast.makeText(MyActivity.getApplicationContext(), "Connection failed ", Toast.LENGTH_SHORT).show();
+                           Toast.makeText(myActivity.getApplicationContext(), "Connection failed ", Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -62,12 +62,12 @@ public class DAOAuthetification {
 
         if (TextUtils.isEmpty(mail)) {
             // email vide
-            Toast.makeText(MyActivity.getApplicationContext(), "Veuillez rentrer votre email SVP", Toast.LENGTH_SHORT).show();
+            Toast.makeText(myActivity.getApplicationContext(), "Veuillez rentrer votre email SVP", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(pass)) {
             //password vide
-            Toast.makeText(MyActivity.getApplicationContext(), "Veuillez rentrer votre mot de passe SVP", Toast.LENGTH_SHORT).show();
+            Toast.makeText(myActivity.getApplicationContext(), "Veuillez rentrer votre mot de passe SVP", Toast.LENGTH_SHORT).show();
             return;
 
         }
@@ -79,10 +79,10 @@ public class DAOAuthetification {
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         if (task.isSuccessful()) {
-                            MyActivity.startActivity(new Intent(MyActivity.getApplicationContext(), Profile.class));
-                            Toast.makeText(MyActivity.getApplicationContext(), "Registred successful", Toast.LENGTH_SHORT).show();
+                            myActivity.startActivity(new Intent(myActivity.getApplicationContext(), Profile.class));
+                            Toast.makeText(myActivity.getApplicationContext(), "Registred successful", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(MyActivity.getApplicationContext(), "Could not registred ... Please Try again ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(myActivity.getApplicationContext(), "Could not registred ... Please Try again ", Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -94,7 +94,7 @@ public class DAOAuthetification {
     public  void resetPassword(String email){
 
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(MyActivity.getApplication(), "Enter your registered email id", Toast.LENGTH_SHORT).show();
+            Toast.makeText(myActivity.getApplication(), "Enter your registered email id", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -103,9 +103,9 @@ public class DAOAuthetification {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(MyActivity.getApplicationContext(), "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(myActivity.getApplicationContext(), "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(MyActivity.getApplicationContext(), "Failed to send reset email!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(myActivity.getApplicationContext(), "Failed to send reset email!", Toast.LENGTH_SHORT).show();
                         }
 
                     }
