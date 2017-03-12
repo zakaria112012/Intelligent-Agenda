@@ -46,3 +46,4 @@ script:
     - ./gradlew connectedAndroidTest coveralls
 notifications:
     email: false
+

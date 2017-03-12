@@ -13,15 +13,15 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.iaproject.miage.intelligentagenda.R;
-import com.iaproject.miage.intelligentagenda.database.daoDatabase;
 import com.iaproject.miage.intelligentagenda.feature.event.model.Agenda;
 import com.iaproject.miage.intelligentagenda.feature.event.model.Event;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,15 +29,13 @@ import static com.iaproject.miage.intelligentagenda.R.layout.dialog;
 
 public class ActivityDay extends AppCompatActivity {
 
+	//public Agenda agenda=new Agenda("programme");
 
-
-
-
-
+	private FirebaseAuth firebaseAuth;
+	//public FirebaseDatabase database;
+	private DatabaseReference databaseReference ;
 
 	ImageButton buttonAdd;
-	Agenda agenda;
-	Event event;
 	SimpleAdapter sa = null;
 	List<HashMap<String, Object>> list = null;
 	HashMap<String, Object> map_personn = null;
@@ -49,10 +47,14 @@ public class ActivityDay extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_day);
 
-		/*if(firebaseAuth.getCurrentUser()==null){
+		firebaseAuth=FirebaseAuth.getInstance();
+		databaseReference = FirebaseDatabase.getInstance().getReference();
 
-			finish();
-		}*/
+		if(firebaseAuth.getCurrentUser()==null){
+
+		Toast.makeText(getApplicationContext(),"walouuuuuuuuuu", Toast.LENGTH_SHORT).show();
+
+		}
 
 		list = new ArrayList<>();
 		String[] from = new String[]{"titre", "description"};
@@ -62,86 +64,31 @@ public class ActivityDay extends AppCompatActivity {
 		lv = (ListView) findViewById(R.id.listView);
 		lv.setAdapter(sa);
 
-
-		/*final EditText titre = (EditText) findViewById(R.id.editTextTitle);
-		final EditText debut = (EditText) findViewById(R.id.editTextStart);
-		final EditText fin = (EditText) findViewById(R.id.editTextEnd);
-		final EditText description = (EditText) findViewById(R.id.editTextDescription);
-		final TextView titreEven = (TextView) findViewById(R.id.activity_title_event);
-		final TextView debutEven = (TextView) findViewById(R.id.activity_date_start_event);
-		final TextView finEven = (TextView) findViewById(R.id.activity_date_end_event);
-		final TextView descriEven = (TextView) findViewById(R.id.activity_desc_event);*/
-
-
-
 		buttonAdd = (ImageButton) findViewById(R.id.activity_day_button_add);
 		buttonAdd.setOnClickListener(new View.OnClickListener() {
-
-
 			@Override
 			public void onClick(View v) {
-
-
-
 				final View view = LayoutInflater.from(ActivityDay.this).inflate(dialog, null);
 				AlertDialog.Builder Builder = new AlertDialog.Builder(ActivityDay.this);
-
-
-
-
-
 				Builder.setMessage("Creer votre evenement")
 						.setView(view)
 						.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
-							//@RequiresApi(api = Build.VERSION_CODES.N)
 							@Override
 							public void onClick(DialogInterface dialogInterface, int wich) {
 								// operation à effectuées
-
-
-
 								EditText descrip = (EditText)view.findViewById(R.id.editTextDescription);
 								EditText tit = (EditText)view.findViewById(R.id.editTextTitle);
 								EditText start = (EditText)view.findViewById(R.id.editTextStart);
 								EditText  end = (EditText)view.findViewById(R.id.editTextEnd);
 
-
-
-
-							Calendar cal1 = Calendar.getInstance();
-								Calendar cal2= Calendar.getInstance();
-								SimpleDateFormat sdf1=new SimpleDateFormat("MMM dd yyyy");
-								SimpleDateFormat sdf2=new SimpleDateFormat("MMM dd yyyy");
-								try {
-									cal1.setTime(sdf1.parse(start.getText().toString()));
-								} catch (ParseException e) {
-									e.printStackTrace();
-								}
-								try {
-									cal2.setTime(sdf2.parse(end.getText().toString()));
-								} catch (ParseException e) {
-									e.printStackTrace();
-								}
-
-
-
-
-
 								Event event = new Event(tit.getText().toString(), start.getText().toString(), end.getText().toString(), descrip.getText().toString());
-
-								daoDatabase daoDatabase=new daoDatabase();
-								daoDatabase.addEvent(event,agenda);
+								FirebaseUser user=firebaseAuth.getCurrentUser();
+								databaseReference.child("users").child(user.getUid()).setValue(event);
+								/*daoDatabase daoDatabase=new daoDatabase();
+								daoDatabase.addEvent(event);*/
 								Agenda agenda=new Agenda("programme");
 								agenda.addEvent(event);
-
-
-
-
-								//Log.i("", titre.getText().toString() + " " + description.getText().toString());
-
-
 								Toast.makeText(getApplicationContext(),tit.getText().toString(), Toast.LENGTH_SHORT).show();
-
 								map_personn = new HashMap<String, Object>();
 								map_personn.put("titre", tit.getText().toString());
 
@@ -150,26 +97,12 @@ public class ActivityDay extends AppCompatActivity {
 								sa.notifyDataSetChanged();
 								lv.setAdapter(sa);
 
-
-
-
-								/*Event event = new Event(titre.getText().toString(), debut.getText().toString(), fin.getText().toString(), description.getText().toString());
-								Agenda agenda = new Agenda("test");
-								agenda.addEvent(event);*/
-
-
-
-
 							}
 						})
 						.setNegativeButton("quitter", null)
 						.setCancelable(false);
 				AlertDialog dialog = Builder.create();
 				dialog.show();
-
-
-
-
 
 			}
 		});
