@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -16,10 +17,15 @@ import android.widget.Toast;
 
 import com.iaproject.miage.intelligentagenda.R;
 import com.iaproject.miage.intelligentagenda.database.daoDatabase;
+import com.iaproject.miage.intelligentagenda.exception.AddEventException;
 import com.iaproject.miage.intelligentagenda.feature.event.model.Agenda;
 import com.iaproject.miage.intelligentagenda.feature.event.model.Event;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,8 +35,9 @@ import static com.iaproject.miage.intelligentagenda.R.layout.dialog;
 
 public class ActivityDay extends AppCompatActivity {
 
+	private Agenda agenda=new Agenda("programme");
+
 	ImageButton buttonAdd;
-	Agenda agenda;
 	Event event;
 	SimpleAdapter sa = null;
 	List<HashMap<String, Object>> list = null;
@@ -70,16 +77,49 @@ public class ActivityDay extends AppCompatActivity {
 
 								EditText descrip = (EditText)view.findViewById(R.id.editTextDescription);
 								EditText tit = (EditText)view.findViewById(R.id.editTextTitle);
+								EditText pla = (EditText)view.findViewById(R.id.editTextPlace);
 								EditText start = (EditText)view.findViewById(R.id.editTextStart);
 								EditText  end = (EditText)view.findViewById(R.id.editTextEnd);
-								Event event = new Event(tit.getText().toString(), start.getText().toString(), end.getText().toString(), descrip.getText().toString());
-								Agenda agenda=new Agenda("programme");
-								agenda.addEvent(event);
-								daoDatabase daoDatabase=new daoDatabase();
-								daoDatabase.addEvent(event,agenda);
+								CheckBox dForte=(CheckBox) view.findViewById(R.id.checkBoxStart);
+								CheckBox fForte=(CheckBox) view.findViewById(R.id.checkBoxeEnd);
+								boolean isDateStartStrongness=true;
+								boolean isDateEndStrongness=true;
 
 
 
+								if(dForte.isChecked()){
+									isDateStartStrongness=false;
+								}
+								if(dForte.isChecked()){
+									isDateEndStrongness=false;
+								}
+
+								SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy-HH:mm");
+								Date date1 ;
+								Date date2 ;
+								GregorianCalendar cal = new GregorianCalendar();
+								GregorianCalendar cal2 = new GregorianCalendar();
+								try {
+									date1 = sdf.parse(start.getText().toString());
+									date2 = sdf.parse(end.getText().toString());
+									cal.setTime(date1);
+									cal2.setTime(date2);
+
+								} catch (ParseException e) {
+
+								}
+
+
+
+								try {
+									event = new Event(tit.getText().toString(), pla.getText().toString(),cal, cal2, descrip.getText().toString(),isDateStartStrongness,isDateEndStrongness);
+									agenda.addEvent(event);
+									daoDatabase daoDatabase=new daoDatabase();
+									daoDatabase.addEvent(event,agenda);
+
+								} catch (AddEventException e) {
+									e.printStackTrace();
+								}
 
 								Toast.makeText(getApplicationContext(),tit.getText().toString(), Toast.LENGTH_SHORT).show();
 
@@ -107,63 +147,26 @@ public class ActivityDay extends AppCompatActivity {
 
 		});
 
-
-
 		lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
 			@Override
-
 			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-
 				list.remove(position);
-
 				sa.notifyDataSetChanged();
-
+				agenda.deleteEvent(event);
 				return true;
-
 			}
 
-
-
-
-
 		});
-
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
 
 			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-/*
-
-				EditText description = (EditText)view.findViewById(R.id.editTextDescription);
-
-				EditText titre = (EditText)view.findViewById(R.id.editTextTitle);
-
-				EditText start = (EditText)view.findViewById(R.id.editTextStart);
-
-				EditText  end = (EditText)view.findViewById(R.id.editTextEnd);
-
-
-
-				titreEven.setText(titre.getText().toString());
-
-				descriEven.setText(description.getText().toString());
-
-				debutEven.setText(start.getText().toString());
-
-				finEven.setText(end.getText().toString());
-
-*/
+// sans code
 
 			}
 
 		});
-
-
-
-
 
 	}
 

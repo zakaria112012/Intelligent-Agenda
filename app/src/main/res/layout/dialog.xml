@@ -15,6 +15,16 @@
         <requestFocus />
     </EditText>
 
+    <EditText
+        android:id="@+id/editTextPlace"
+        android:hint="Entrez votre place"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
 
 
     <EditText
@@ -23,7 +33,7 @@
         android:hint="debut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="date">
+        android:inputType="datetime">
         android:ems="10" >
 
         <requestFocus />
@@ -35,7 +45,7 @@
         android:hint="End"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="date">
+        android:inputType="datetime">
         android:ems="10" >
 
         <requestFocus />
@@ -51,6 +61,18 @@
 
         <requestFocus />
     </EditText>
+
+    <CheckBox
+        android:text="Date debut forte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBoxStart" />
+
+    <CheckBox
+        android:text="Date fin forte"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBoxeEnd" />
 
 
 </LinearLayout>
