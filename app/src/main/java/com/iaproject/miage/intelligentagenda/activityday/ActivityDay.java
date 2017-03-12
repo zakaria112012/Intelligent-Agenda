@@ -1,7 +1,6 @@
 package com.iaproject.miage.intelligentagenda.activityday;
 
 
-
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -42,6 +41,9 @@ public class ActivityDay extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_day);
+
+
+
 		/*if(firebaseAuth.getCurrentUser()==null){
 			finish();
 					}*/
@@ -71,10 +73,13 @@ public class ActivityDay extends AppCompatActivity {
 								EditText start = (EditText)view.findViewById(R.id.editTextStart);
 								EditText  end = (EditText)view.findViewById(R.id.editTextEnd);
 								Event event = new Event(tit.getText().toString(), start.getText().toString(), end.getText().toString(), descrip.getText().toString());
-								daoDatabase daoDatabase=new daoDatabase();
-								daoDatabase.addEvent(event,agenda);
 								Agenda agenda=new Agenda("programme");
 								agenda.addEvent(event);
+								daoDatabase daoDatabase=new daoDatabase();
+								daoDatabase.addEvent(event,agenda);
+
+
+
 
 								Toast.makeText(getApplicationContext(),tit.getText().toString(), Toast.LENGTH_SHORT).show();
 
@@ -97,16 +102,6 @@ public class ActivityDay extends AppCompatActivity {
 				AlertDialog dialog = Builder.create();
 
 				dialog.show();
-
-
-
-
-
-
-
-
-
-
 
 			}
 
@@ -134,25 +129,11 @@ public class ActivityDay extends AppCompatActivity {
 
 		});
 
-
-
-
-
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
 
 			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-
-
-
-
-
-
-
-
-
 
 /*
 
