@@ -21,10 +21,7 @@ import com.iaproject.miage.intelligentagenda.exception.AddEventException;
 import com.iaproject.miage.intelligentagenda.feature.event.model.Agenda;
 import com.iaproject.miage.intelligentagenda.feature.event.model.Event;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -90,29 +87,23 @@ public class ActivityDay extends AppCompatActivity {
 								if(dForte.isChecked()){
 									isDateStartStrongness=false;
 								}
-								if(dForte.isChecked()){
+								if(fForte.isChecked()){
 									isDateEndStrongness=false;
 								}
 
-								SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy-HH:mm");
+							/*	SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy hh:mm");
 								Date date1 ;
 								Date date2 ;
 								GregorianCalendar cal = new GregorianCalendar();
 								GregorianCalendar cal2 = new GregorianCalendar();
-								try {
-									date1 = sdf.parse(start.getText().toString());
-									date2 = sdf.parse(end.getText().toString());
-									cal.setTime(date1);
-									cal2.setTime(date2);
-
-								} catch (ParseException e) {
-
-								}
-
+								date1 = sdf.parse(start.getText().toString(),new ParsePosition(0));
+								date2 = sdf.parse(end.getText().toString(),new ParsePosition(0));
+								cal.setTime(date1);
+								cal2.setTime(date2);*/
 
 
 								try {
-									event = new Event(tit.getText().toString(), pla.getText().toString(),cal, cal2, descrip.getText().toString(),isDateStartStrongness,isDateEndStrongness);
+									event = new Event(tit.getText().toString(), pla.getText().toString(),new GregorianCalendar(2017,03,13,18,30), new GregorianCalendar(2017,03,13,18,35), descrip.getText().toString(),isDateStartStrongness,isDateEndStrongness);
 									agenda.addEvent(event);
 									daoDatabase daoDatabase=new daoDatabase();
 									daoDatabase.addEvent(event,agenda);

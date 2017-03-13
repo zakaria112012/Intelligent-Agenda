@@ -1,7 +1,6 @@
 package com.iaproject.miage.intelligentagenda.database;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.iaproject.miage.intelligentagenda.feature.event.model.Agenda;
@@ -21,8 +20,9 @@ public class daoDatabase {
     public final void addEvent(Event event, Agenda agenda){
 
 
-        FirebaseUser user=firebaseAuth.getCurrentUser();
-        databaseReference.child("users").child(user.getUid()).setValue(event);
+        //FirebaseUser user=firebaseAuth.getCurrentUser();
+        String key = databaseReference.child("event").push().getKey();
+        databaseReference.child(agenda.titleAgenda).child("event").child(key).setValue(event);
         agenda.addEvent(event);
 
 
