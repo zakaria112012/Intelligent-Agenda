@@ -15,11 +15,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.iaproject.miage.intelligentagenda.R;
 import com.iaproject.miage.intelligentagenda.database.daoDatabase;
 import com.iaproject.miage.intelligentagenda.exception.AddEventException;
@@ -58,34 +54,6 @@ public class ActivityDay extends AppCompatActivity {
 		sa = new SimpleAdapter(this, list, R.layout.list_event, from, to);
 		lv = (ListView) findViewById(R.id.listView);
 		lv.setAdapter(sa);
-		dref= FirebaseDatabase.getInstance().getReference();
-		dref.addChildEventListener(new ChildEventListener() {
-			@Override
-			public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-				String value=dataSnapshot.getValue(String.class);
-
-			}
-
-			@Override
-			public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-			}
-
-			@Override
-			public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-			}
-
-			@Override
-			public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-			}
-
-			@Override
-			public void onCancelled(DatabaseError databaseError) {
-
-			}
-		});
 
 		buttonAdd = (ImageButton) findViewById(R.id.activity_day_button_add);
 		buttonAdd.setOnClickListener(new View.OnClickListener() {
@@ -131,18 +99,18 @@ public class ActivityDay extends AppCompatActivity {
 								cal2.setTime(date2);*/
 
 
-
 								try {
 									event = new Event(tit.getText().toString(), pla.getText().toString(),start.getText().toString(),end.getText().toString(), descrip.getText().toString(),isDateStartStrongness,isDateEndStrongness);
-									agenda.addEvent(event);
-									daoDatabase=new daoDatabase();
-									daoDatabase.addEvent(event,agenda);
-
 								} catch (AddEventException e) {
 									e.printStackTrace();
 								} catch (ParseException e) {
 									e.printStackTrace();
 								}
+								agenda.addEvent(event);
+										daoDatabase=new daoDatabase();
+										daoDatabase.addEvent(event,agenda);
+
+
 
 								Toast.makeText(getApplicationContext(),tit.getText().toString(), Toast.LENGTH_SHORT).show();
 
@@ -157,13 +125,9 @@ public class ActivityDay extends AppCompatActivity {
 							}
 
 						})
-
 						.setNegativeButton("quitter", null)
-
 						.setCancelable(false);
-
 				AlertDialog dialog = Builder.create();
-
 				dialog.show();
 
 			}
@@ -175,7 +139,6 @@ public class ActivityDay extends AppCompatActivity {
 			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
 				list.remove(position);
 				sa.notifyDataSetChanged();
-				daoDatabase.deleteEvent();
 				agenda.deleteEvent(event);
 				return true;
 			}
