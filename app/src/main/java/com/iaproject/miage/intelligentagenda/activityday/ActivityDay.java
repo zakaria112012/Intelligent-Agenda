@@ -15,14 +15,19 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.iaproject.miage.intelligentagenda.R;
 import com.iaproject.miage.intelligentagenda.database.daoDatabase;
 import com.iaproject.miage.intelligentagenda.exception.AddEventException;
 import com.iaproject.miage.intelligentagenda.feature.event.model.Agenda;
 import com.iaproject.miage.intelligentagenda.feature.event.model.Event;
 
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,14 +36,15 @@ import static com.iaproject.miage.intelligentagenda.R.layout.dialog;
 
 
 public class ActivityDay extends AppCompatActivity {
-
+	daoDatabase daoDatabase;
+	DatabaseReference dref;
 	private Agenda agenda=new Agenda("programme");
 
 	ImageButton buttonAdd;
 	Event event;
 	SimpleAdapter sa = null;
 	List<HashMap<String, Object>> list = null;
-	HashMap<String, Object> map_personn = null;
+	HashMap<String, Object> map = null;
 	ListView lv = null;
 	static int i = 0;
 	@Override
@@ -46,17 +52,40 @@ public class ActivityDay extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_day);
 
-
-
-		/*if(firebaseAuth.getCurrentUser()==null){
-			finish();
-					}*/
 		list = new ArrayList<>();
 		String[] from = new String[]{"titre", "description"};
 		int[] to = new int[]{R.id.activity_title_event, R.id.activity_title_descip};
 		sa = new SimpleAdapter(this, list, R.layout.list_event, from, to);
 		lv = (ListView) findViewById(R.id.listView);
 		lv.setAdapter(sa);
+		dref= FirebaseDatabase.getInstance().getReference();
+		dref.addChildEventListener(new ChildEventListener() {
+			@Override
+			public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+				String value=dataSnapshot.getValue(String.class);
+
+			}
+
+			@Override
+			public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+			}
+
+			@Override
+			public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+			}
+
+			@Override
+			public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+
+			}
+		});
 
 		buttonAdd = (ImageButton) findViewById(R.id.activity_day_button_add);
 		buttonAdd.setOnClickListener(new View.OnClickListener() {
@@ -102,22 +131,25 @@ public class ActivityDay extends AppCompatActivity {
 								cal2.setTime(date2);*/
 
 
+
 								try {
-									event = new Event(tit.getText().toString(), pla.getText().toString(),new GregorianCalendar(2017,03,13,18,30), new GregorianCalendar(2017,03,13,18,35), descrip.getText().toString(),isDateStartStrongness,isDateEndStrongness);
+									event = new Event(tit.getText().toString(), pla.getText().toString(),start.getText().toString(),end.getText().toString(), descrip.getText().toString(),isDateStartStrongness,isDateEndStrongness);
 									agenda.addEvent(event);
-									daoDatabase daoDatabase=new daoDatabase();
+									daoDatabase=new daoDatabase();
 									daoDatabase.addEvent(event,agenda);
 
 								} catch (AddEventException e) {
+									e.printStackTrace();
+								} catch (ParseException e) {
 									e.printStackTrace();
 								}
 
 								Toast.makeText(getApplicationContext(),tit.getText().toString(), Toast.LENGTH_SHORT).show();
 
-								map_personn = new HashMap<String, Object>();
-								map_personn.put("titre", tit.getText().toString());
+								map = new HashMap<String, Object>();
+								map.put("titre", tit.getText().toString());
 								i++;
-								list.add(map_personn);
+								list.add(map);
 								sa.notifyDataSetChanged();
 								lv.setAdapter(sa);
 
@@ -143,6 +175,7 @@ public class ActivityDay extends AppCompatActivity {
 			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
 				list.remove(position);
 				sa.notifyDataSetChanged();
+				daoDatabase.deleteEvent();
 				agenda.deleteEvent(event);
 				return true;
 			}
