@@ -27,36 +27,9 @@ public class Event implements Comparable<Event>{
 	public SimpleDateFormat sdf;
 
 
-	/*public Event(String title, String place, Calendar dateStart, Calendar dateEnd, String description,Boolean isDateStartStrongness,Boolean isDateEndStrongness )
+	/*public Event(String title, String place, String dateStart, String dateEnd, String description, Boolean isDateStartStrongness, Boolean isDateEndStrongness )
 
-			throws AddEventException {
-		this.title = title;
-		this.place = place;
-		this.description = description;
-
-
-		if(dateStart.before(dateEnd)){
-			this.dateStart = dateStart;
-			this.dateEnd = dateEnd;
-			this.isDateEndStrongness = true;
-			this.isDateStartStrongness = true;
-			sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.FRANCE);
-			startDate= sdf.format(dateStart.getTime());
-			endDate= sdf.format(dateEnd.getTime());
-
-
-		}
-		else
-			throw new AddEventException();
-	}*/
-
-
-
-
-	public Event(String title, String place, String startDate, String endDate, String description,Boolean isDateStartStrongness,Boolean isDateEndStrongness )
-
-			throws AddEventException, ParseException {
-
+			throws AddEventException,ParseException {
 		this.title = title;
 		this.place = place;
 		this.description = description;
@@ -69,19 +42,48 @@ public class Event implements Comparable<Event>{
 		this.dateEnd=new GregorianCalendar();
 		this.dateStart.setTime(dd);
 		this.dateEnd.setTime(de);
-		this.isDateEndStrongness = true;
-		this.isDateStartStrongness = true;
-
-
+		sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.FRANCE);
+		//startDate= sdf.format(dateStart.getTime());
+		//endDate= sdf.format(dateEnd.getTime());
 		if(dateStart.before(dateEnd)){
+			this.dateStart = dateStart;
+			this.dateEnd = dateEnd;
 			this.isDateEndStrongness = true;
 			this.isDateStartStrongness = true;
-			//startDate= sdf.format(dateStart.getTime());
-			//endDate= sdf.format(dateEnd.getTime());
+
+
+
 		}
 		else
 			throw new AddEventException();
+	}*/
+
+	public Event(String title, String place, String startDate, String endDate, String description,Boolean isDateStartStrongness,Boolean isDateEndStrongness )
+
+			throws AddEventException, ParseException {
+
+		this.title = title;
+		this.place = place;
+		this.description = description;
+		sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.isDateEndStrongness = isDateEndStrongness;
+		this.isDateStartStrongness = isDateStartStrongness;
+		Date dd = sdf.parse(startDate);
+		Date de = sdf.parse(startDate);
+		this.dateStart = new GregorianCalendar();
+		this.dateEnd = new GregorianCalendar();
+		this.dateStart.setTime(dd);
+		this.dateEnd.setTime(de);
+		if (dateStart.before(dateEnd)) {
+			this.isDateEndStrongness = true;
+			this.isDateStartStrongness = true;
+		}
 	}
+
+
+
 	@Override
 	public int compareTo(Event event) {
 		return this.dateStart.compareTo(event.dateStart);
