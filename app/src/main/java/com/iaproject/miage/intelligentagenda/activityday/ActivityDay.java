@@ -2,6 +2,8 @@ package com.iaproject.miage.intelligentagenda.activityday;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -37,7 +39,7 @@ public class ActivityDay extends AppCompatActivity {
 	DatabaseReference dref;
 	Event event = null;
 
-	private Agenda agenda=new Agenda("programme");
+	private Agenda agenda = new Agenda("programme");
 	//Event	event = new Event("","","","","test",isDateStartStrongness,isDateEndStrongness);
 	ImageButton buttonAdd;
 	SimpleAdapter sa = null;
@@ -55,8 +57,8 @@ public class ActivityDay extends AppCompatActivity {
 		setContentView(R.layout.activity_day);
 
 		list = new ArrayList<>();
-		String[] from = new String[]{"titre", "description"};
-		int[] to = new int[]{R.id.activity_title_event, R.id.activity_title_descip};
+		String[] from = new String[]{"titre", "place"};
+		int[] to = new int[]{R.id.activity_title_event, R.id.activity_place};
 		sa = new SimpleAdapter(this, list, R.layout.list_event, from, to);
 		lv = (ListView) findViewById(R.id.listView);
 		lv.setAdapter(sa);
@@ -76,23 +78,22 @@ public class ActivityDay extends AppCompatActivity {
 							public void onClick(DialogInterface dialogInterface, int wich) {
 								// operation à effectuées
 
-								EditText descrip = (EditText)view.findViewById(R.id.editTextDescription);
-								EditText tit = (EditText)view.findViewById(R.id.editTextTitle);
-								EditText pla = (EditText)view.findViewById(R.id.editTextPlace);
-								EditText start = (EditText)view.findViewById(R.id.editTextStart);
-								EditText  end = (EditText)view.findViewById(R.id.editTextEnd);
-								CheckBox dForte=(CheckBox) view.findViewById(R.id.checkBoxStart);
-								CheckBox fForte=(CheckBox) view.findViewById(R.id.checkBoxeEnd);
-								boolean isDateStartStrongness=true;
-								boolean isDateEndStrongness=true;
+								EditText descrip = (EditText) view.findViewById(R.id.editTextDescription);
+								EditText tit = (EditText) view.findViewById(R.id.editTextTitle);
+								EditText pla = (EditText) view.findViewById(R.id.editTextPlace);
+								EditText start = (EditText) view.findViewById(R.id.editTextStart);
+								EditText end = (EditText) view.findViewById(R.id.editTextEnd);
+								CheckBox dForte = (CheckBox) view.findViewById(R.id.checkBoxStart);
+								CheckBox fForte = (CheckBox) view.findViewById(R.id.checkBoxeEnd);
+								boolean isDateStartStrongness = true;
+								boolean isDateEndStrongness = true;
 
 
-
-								if(dForte.isChecked()){
-									isDateStartStrongness=false;
+								if (dForte.isChecked()) {
+									isDateStartStrongness = false;
 								}
-								if(fForte.isChecked()){
-									isDateEndStrongness=false;
+								if (fForte.isChecked()) {
+									isDateEndStrongness = false;
 								}
 
 								/*SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy hh:mm");
@@ -106,31 +107,28 @@ public class ActivityDay extends AppCompatActivity {
 								cal2.setTime(date2);*/
 
 
-
 								try {
-									event = new Event(tit.getText().toString(), pla.getText().toString(),start.getText().toString(),end.getText().toString(), descrip.getText().toString(),isDateStartStrongness,isDateEndStrongness);
-									daoDatabase=new daoDatabase();
-									daoDatabase.addEvent(event,agenda);
+									event = new Event(tit.getText().toString(), pla.getText().toString(), start.getText().toString(), end.getText().toString(), descrip.getText().toString(), isDateStartStrongness, isDateEndStrongness);
+									daoDatabase = new daoDatabase();
+									daoDatabase.addEvent(event, agenda);
 								} catch (AddEventException e) {
 									e.printStackTrace();
-									Toast.makeText(getApplicationContext(),"catch 1", Toast.LENGTH_SHORT).show();
+									Toast.makeText(getApplicationContext(), "catch 1", Toast.LENGTH_SHORT).show();
 
 								} catch (ParseException e) {
 									e.printStackTrace();
-									Toast.makeText(getApplicationContext(),"catch 2", Toast.LENGTH_SHORT).show();
+									Toast.makeText(getApplicationContext(), "catch 2", Toast.LENGTH_SHORT).show();
 								}
 
 
+								Toast.makeText(getApplicationContext(), tit.getText().toString(), Toast.LENGTH_SHORT).show();
 
 
-								Toast.makeText(getApplicationContext(),tit.getText().toString(), Toast.LENGTH_SHORT).show();
-
-
-
-							//	Toast.makeText(getApplicationContext(),tit.getText().toString(), Toast.LENGTH_SHORT).show();
+								//	Toast.makeText(getApplicationContext(),tit.getText().toString(), Toast.LENGTH_SHORT).show();
 
 								map = new HashMap<String, Object>();
 								map.put("titre", tit.getText().toString());
+								map.put("place", pla.getText().toString());
 								i++;
 								list.add(map);
 								sa.notifyDataSetChanged();
@@ -146,6 +144,47 @@ public class ActivityDay extends AppCompatActivity {
 			}
 
 		});
+
+		final ImageButton sms = (ImageButton) findViewById(R.id.sms);
+		sms.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View view) {
+				Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+				smsIntent.setData(Uri.parse("smsto:"));
+				smsIntent.setType("vnd.android-dir/mms-sms");
+				smsIntent.putExtra("address", new String("01234"));
+				smsIntent.putExtra("sms_body", "Test ");
+				try {
+					startActivity(smsIntent);
+					finish();
+				} catch (android.content.ActivityNotFoundException ex) {
+					Toast.makeText(ActivityDay.this, "SMS faild, please try again later.", Toast.LENGTH_SHORT).show();
+				}
+
+			}
+
+		});
+
+		final ImageButton phone = (ImageButton) findViewById(R.id.phone);
+		phone.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View view) {
+				Intent callIntent = new Intent(Intent.ACTION_VIEW);
+				String tel = "0101010101";// Votre numéro de téléphone
+				callIntent.setData(Uri.parse("tel:" + tel));
+				startActivity(callIntent);
+
+				try {
+					startActivity(callIntent);
+					finish();
+				} catch (android.content.ActivityNotFoundException ex) {
+					Toast.makeText(ActivityDay.this, "call faild, please try again later.", Toast.LENGTH_SHORT).show();
+				}
+
+			}
+
+		});
+
 
 		lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			@Override
@@ -177,19 +216,14 @@ public class ActivityDay extends AppCompatActivity {
 				df.setText(event.endDate);
 
 				Builder1.setMessage("Creer votre evenement")
-
 						.setView(view2)
 						.setNegativeButton("quitter", null)
 						.setCancelable(false);
 				AlertDialog dialog = Builder1.create();
 				dialog.show();
-
 			}
 
 		});
-
-
-
 
 	}
 
