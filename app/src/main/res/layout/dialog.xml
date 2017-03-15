@@ -26,11 +26,10 @@
         <requestFocus />
     </EditText>
 
-
     <EditText
         android:id="@+id/editTextStart"
         android:textAlignment="center"
-        android:hint="debut"
+        android:hint="dd/mm/yyyy hh:mm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="datetime">
@@ -42,7 +41,7 @@
     <EditText
         android:id="@+id/editTextEnd"
         android:textAlignment="center"
-        android:hint="End"
+        android:hint="dd/mm/yyyy hh:mm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="datetime">

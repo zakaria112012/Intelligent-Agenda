@@ -49,7 +49,7 @@
         app:srcCompat="@drawable/ic_power_calendar"
         android:id="@+id/imageView"
         android:layout_above="@+id/listView"
-        android:layout_alignEnd="@+id/sms" />
+        android:layout_alignEnd="@+id/test" />
 
     <ListView
         android:id="@+id/listView"

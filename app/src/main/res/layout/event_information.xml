@@ -65,5 +65,11 @@
         <requestFocus />
     </TextView>
 
+    <ImageButton
+        android:id="@+id/test"
+        android:layout_width="69dp"
+        android:layout_height="match_parent"
+/>
+
 
 </LinearLayout>

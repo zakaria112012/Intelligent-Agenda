@@ -1,12 +1,16 @@
 package com.iaproject.miage.intelligentagenda.activityday;
 
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,12 +39,12 @@ import static com.iaproject.miage.intelligentagenda.R.layout.event_information;
 
 
 public class ActivityDay extends AppCompatActivity {
+
+
 	daoDatabase daoDatabase;
 	DatabaseReference dref;
 	Event event = null;
-
-	private Agenda agenda = new Agenda("programme");
-	//Event	event = new Event("","","","","test",isDateStartStrongness,isDateEndStrongness);
+	private Agenda agenda = new Agenda("My agenda");
 	ImageButton buttonAdd;
 	SimpleAdapter sa = null;
 	List<HashMap<String, Object>> list = null;
@@ -57,8 +61,8 @@ public class ActivityDay extends AppCompatActivity {
 		setContentView(R.layout.activity_day);
 
 		list = new ArrayList<>();
-		String[] from = new String[]{"titre", "place"};
-		int[] to = new int[]{R.id.activity_title_event, R.id.activity_place};
+		String[] from = new String[]{"titre", "place","start","end","despcription"};
+		int[] to = new int[]{R.id.activity_title_event, R.id.activity_place,R.id.activity_start,R.id.activity_end,R.id.activity_descrption};
 		sa = new SimpleAdapter(this, list, R.layout.list_event, from, to);
 		lv = (ListView) findViewById(R.id.listView);
 		lv.setAdapter(sa);
@@ -72,12 +76,11 @@ public class ActivityDay extends AppCompatActivity {
 				final View view = LayoutInflater.from(ActivityDay.this).inflate(dialog, null);
 				AlertDialog.Builder Builder = new AlertDialog.Builder(ActivityDay.this);
 				Builder.setMessage("Creer votre evenement")
-						.setView(view)
+				.setView(view)
 						.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialogInterface, int wich) {
 								// operation à effectuées
-
 								EditText descrip = (EditText) view.findViewById(R.id.editTextDescription);
 								EditText tit = (EditText) view.findViewById(R.id.editTextTitle);
 								EditText pla = (EditText) view.findViewById(R.id.editTextPlace);
@@ -87,6 +90,15 @@ public class ActivityDay extends AppCompatActivity {
 								CheckBox fForte = (CheckBox) view.findViewById(R.id.checkBoxeEnd);
 								boolean isDateStartStrongness = true;
 								boolean isDateEndStrongness = true;
+
+
+								if (TextUtils.isEmpty(tit.getText().toString())||TextUtils.isEmpty(pla.getText().toString())
+										||TextUtils.isEmpty(start.getText().toString())||TextUtils.isEmpty(end.getText().toString())
+										||TextUtils.isEmpty(descrip.getText().toString()) ) {
+									Toast.makeText(getApplicationContext(), "Veuillez remplir tous les champs S.V.P ...", Toast.LENGTH_SHORT).show();
+									return;
+								}
+
 
 
 								if (dForte.isChecked()) {
@@ -106,7 +118,6 @@ public class ActivityDay extends AppCompatActivity {
 								cal.setTime(date1);
 								cal2.setTime(date2);*/
 
-
 								try {
 									event = new Event(tit.getText().toString(), pla.getText().toString(), start.getText().toString(), end.getText().toString(), descrip.getText().toString(), isDateStartStrongness, isDateEndStrongness);
 									daoDatabase = new daoDatabase();
@@ -114,18 +125,12 @@ public class ActivityDay extends AppCompatActivity {
 								} catch (AddEventException e) {
 									e.printStackTrace();
 									Toast.makeText(getApplicationContext(), "catch 1", Toast.LENGTH_SHORT).show();
-
 								} catch (ParseException e) {
 									e.printStackTrace();
 									Toast.makeText(getApplicationContext(), "catch 2", Toast.LENGTH_SHORT).show();
 								}
-
-
 								Toast.makeText(getApplicationContext(), tit.getText().toString(), Toast.LENGTH_SHORT).show();
-
-
 								//	Toast.makeText(getApplicationContext(),tit.getText().toString(), Toast.LENGTH_SHORT).show();
-
 								map = new HashMap<String, Object>();
 								map.put("titre", tit.getText().toString());
 								map.put("place", pla.getText().toString());
@@ -133,9 +138,18 @@ public class ActivityDay extends AppCompatActivity {
 								list.add(map);
 								sa.notifyDataSetChanged();
 								lv.setAdapter(sa);
-							}
 
-						})
+								Notification.Builder builder = new Notification.Builder(getApplicationContext());
+								Notification notification = builder
+										.setSmallIcon(R.mipmap.ic_launcher)
+										.setContentTitle("Intelligent agenda")
+										.setContentText("Un nouvel evenement à été ajouté " )
+										.build();
+								NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+								notificationManager.notify(0,notification);
+							}
+						}
+						)
 						.setNegativeButton("quitter", null)
 						.setCancelable(false);
 				AlertDialog dialog = Builder.create();
@@ -158,7 +172,7 @@ public class ActivityDay extends AppCompatActivity {
 					startActivity(smsIntent);
 					finish();
 				} catch (android.content.ActivityNotFoundException ex) {
-					Toast.makeText(ActivityDay.this, "SMS faild, please try again later.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ActivityDay.this, "SMS failded please try again later.", Toast.LENGTH_SHORT).show();
 				}
 
 			}
@@ -191,36 +205,38 @@ public class ActivityDay extends AppCompatActivity {
 			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
 				list.remove(position);
 				sa.notifyDataSetChanged();
-			//	agenda.deleteEvent(event);
+				//agenda.deleteEvent(event);
 				return true;
 			}
-
 		});
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
 			@Override
-
 			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
 				final View view2 = LayoutInflater.from(ActivityDay.this).inflate(event_information, null);
 				AlertDialog.Builder Builder1 = new AlertDialog.Builder(ActivityDay.this);
+
 				TextView des=(TextView)view2.findViewById(R.id.TextViewDescription);
 				TextView ti=(TextView)view2.findViewById(R.id.TextViewTitre);
 				TextView dd=(TextView)view2.findViewById(R.id.TextViewDateDebut);
 				TextView df=(TextView)view2.findViewById(R.id.TextViewDateFin);
 				TextView pl=(TextView)view2.findViewById(R.id.TextViewPlace);
 				des.setText(event.description);
-				ti.setText(event.title);
+				//TextView test=(TextView) findViewById(R.id.activity_title_event);
 				pl.setText(event.place);
 				dd.setText(event.startDate);
 				df.setText(event.endDate);
 
-				Builder1.setMessage("Creer votre evenement")
+				Builder1.setMessage("Votre evenement ")
 						.setView(view2)
 						.setNegativeButton("quitter", null)
 						.setCancelable(false);
 				AlertDialog dialog = Builder1.create();
 				dialog.show();
+
+
+
+
 			}
 
 		});
