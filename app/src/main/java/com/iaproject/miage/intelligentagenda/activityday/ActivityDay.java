@@ -43,7 +43,7 @@ public class ActivityDay extends AppCompatActivity {
 
 	daoDatabase daoDatabase;
 	DatabaseReference dref;
-	Event event = null;
+	final Event event = null;
 	private Agenda agenda = new Agenda("My agenda");
 	ImageButton buttonAdd;
 	SimpleAdapter sa = null;
@@ -66,6 +66,41 @@ public class ActivityDay extends AppCompatActivity {
 		sa = new SimpleAdapter(this, list, R.layout.list_event, from, to);
 		lv = (ListView) findViewById(R.id.listView);
 		lv.setAdapter(sa);
+
+	/*	dref= FirebaseDatabase.getInstance().getReference();
+		dref.child("users").addChildEventListener(new ChildEventListener() {
+			@Override
+			public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+				Iterable<DataSnapshot> chiledren = dataSnapshot.getChildren();
+				for(DataSnapshot child:chiledren){
+
+					Event ev=child.getValue(Event.class);
+					map = new HashMap<String, Object>();
+					map.put("titre", ev.title);
+					map.put("place", ev.place);
+					list.add(map);
+					sa.notifyDataSetChanged();
+					lv.setAdapter(sa);
+				}
+			}
+			@Override
+			public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+			}
+			@Override
+			public void onChildRemoved(DataSnapshot dataSnapshot) {
+			}
+			@Override
+			public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+			}
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+
+			}
+		});
+
+		*/
+
+
 
 
 		buttonAdd = (ImageButton) findViewById(R.id.activity_day_button_add);
@@ -108,16 +143,7 @@ public class ActivityDay extends AppCompatActivity {
 									isDateEndStrongness = false;
 								}
 
-								/*SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy hh:mm");
-								Date date1 ;
-								Date date2 ;
-								Calendar cal = new GregorianCalendar();
-								Calendar cal2 = new GregorianCalendar();
-								date1 = sdf.parse(start.getText().toString(),new ParsePosition(0));
-								date2 = sdf.parse(end.getText().toString(),new ParsePosition(0));
-								cal.setTime(date1);
-								cal2.setTime(date2);*/
-
+								final Event event;
 								try {
 									event = new Event(tit.getText().toString(), pla.getText().toString(), start.getText().toString(), end.getText().toString(), descrip.getText().toString(), isDateStartStrongness, isDateEndStrongness);
 									daoDatabase = new daoDatabase();
@@ -205,6 +231,7 @@ public class ActivityDay extends AppCompatActivity {
 			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
 				list.remove(position);
 				sa.notifyDataSetChanged();
+				daoDatabase.deleteEvent(agenda,event);
 				//agenda.deleteEvent(event);
 				return true;
 			}
