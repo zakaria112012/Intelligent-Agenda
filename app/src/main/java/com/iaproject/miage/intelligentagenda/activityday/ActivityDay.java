@@ -43,8 +43,8 @@ public class ActivityDay extends AppCompatActivity {
 
 	daoDatabase daoDatabase;
 	DatabaseReference dref;
-	final Event event = null;
-	private Agenda agenda = new Agenda("My agenda");
+	Event event = null;
+	public Agenda agenda ;
 	ImageButton buttonAdd;
 	SimpleAdapter sa = null;
 	List<HashMap<String, Object>> list = null;
@@ -59,6 +59,7 @@ public class ActivityDay extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_day);
+		agenda = Agenda.getInstance();
 
 		list = new ArrayList<>();
 		String[] from = new String[]{"titre", "place","start","end","despcription"};
@@ -66,6 +67,7 @@ public class ActivityDay extends AppCompatActivity {
 		sa = new SimpleAdapter(this, list, R.layout.list_event, from, to);
 		lv = (ListView) findViewById(R.id.listView);
 		lv.setAdapter(sa);
+		sa.notifyDataSetChanged();
 
 	/*	dref= FirebaseDatabase.getInstance().getReference();
 		dref.child("users").addChildEventListener(new ChildEventListener() {
@@ -78,6 +80,10 @@ public class ActivityDay extends AppCompatActivity {
 					map = new HashMap<String, Object>();
 					map.put("titre", ev.title);
 					map.put("place", ev.place);
+					map.put("start",ev.dateStart);
+					map.put("end",ev.dateEnd);
+					map.put("description",ev.description);
+
 					list.add(map);
 					sa.notifyDataSetChanged();
 					lv.setAdapter(sa);
@@ -97,11 +103,7 @@ public class ActivityDay extends AppCompatActivity {
 
 			}
 		});
-
 		*/
-
-
-
 
 		buttonAdd = (ImageButton) findViewById(R.id.activity_day_button_add);
 		buttonAdd.setOnClickListener(new View.OnClickListener() {
@@ -133,9 +135,6 @@ public class ActivityDay extends AppCompatActivity {
 									Toast.makeText(getApplicationContext(), "Veuillez remplir tous les champs S.V.P ...", Toast.LENGTH_SHORT).show();
 									return;
 								}
-
-
-
 								if (dForte.isChecked()) {
 									isDateStartStrongness = false;
 								}
@@ -143,7 +142,7 @@ public class ActivityDay extends AppCompatActivity {
 									isDateEndStrongness = false;
 								}
 
-								final Event event;
+
 								try {
 									event = new Event(tit.getText().toString(), pla.getText().toString(), start.getText().toString(), end.getText().toString(), descrip.getText().toString(), isDateStartStrongness, isDateEndStrongness);
 									daoDatabase = new daoDatabase();
@@ -243,20 +242,23 @@ public class ActivityDay extends AppCompatActivity {
 				final View view2 = LayoutInflater.from(ActivityDay.this).inflate(event_information, null);
 				AlertDialog.Builder Builder1 = new AlertDialog.Builder(ActivityDay.this);
 
+
+
 				TextView des=(TextView)view2.findViewById(R.id.TextViewDescription);
 				TextView ti=(TextView)view2.findViewById(R.id.TextViewTitre);
 				TextView dd=(TextView)view2.findViewById(R.id.TextViewDateDebut);
 				TextView df=(TextView)view2.findViewById(R.id.TextViewDateFin);
 				TextView pl=(TextView)view2.findViewById(R.id.TextViewPlace);
+
+				ti.setText(event.title);
 				des.setText(event.description);
-				//TextView test=(TextView) findViewById(R.id.activity_title_event);
 				pl.setText(event.place);
 				dd.setText(event.startDate);
 				df.setText(event.endDate);
 
 				Builder1.setMessage("Votre evenement ")
 						.setView(view2)
-						.setNegativeButton("quitter", null)
+						.setNegativeButton("OK", null)
 						.setCancelable(false);
 				AlertDialog dialog = Builder1.create();
 				dialog.show();

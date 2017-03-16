@@ -6,12 +6,26 @@ import java.util.List;
  * Created by OOussema on 25/02/2017.
  */
 public class Agenda {
+	public  Agenda agenda ;
 	public String titleAgenda;
+
+
+
 	public List<Event> listEvent;
-	public Agenda(String titleAgenda){
+	private Agenda(String titleAgenda){
 		this.titleAgenda = titleAgenda;
 		this.listEvent = new ArrayList<>();
 	}
+
+	/** Instance unique pré-initialisée */
+	private static Agenda INSTANCE = new Agenda("My agenda");
+
+
+	/** Point d'accès pour l'instance unique du singleton */
+	public static Agenda getInstance()
+	{	return INSTANCE;
+	}
+
 	/**
 	 * Permet d'ajouter un évenement dans la liste
 	 * @param event : c'est l'évenement qui sera ajouté
