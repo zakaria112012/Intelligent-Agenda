@@ -148,22 +148,24 @@ public class ActivityDay extends AppCompatActivity {
 									event = new Event(tit.getText().toString(), pla.getText().toString(), start.getText().toString(), end.getText().toString(), descrip.getText().toString(), isDateStartStrongness, isDateEndStrongness,phone.getText().toString());
 									daoDatabase = new daoDatabase();
 									daoDatabase.addEvent(event, agenda);
+									map = new HashMap<String, Object>();
+									map.put("titre", tit.getText().toString());
+									map.put("place", pla.getText().toString());
+									i++;
+									list.add(map);
+									sa.notifyDataSetChanged();
+									lv.setAdapter(sa);
 								} catch (AddEventException e) {
 									e.printStackTrace();
-									Toast.makeText(getApplicationContext(), "catch 1", Toast.LENGTH_SHORT).show();
+									Toast.makeText(getApplicationContext(), "La date de début doit etre avant la date de fin  ", Toast.LENGTH_SHORT).show();
+
 								} catch (ParseException e) {
 									e.printStackTrace();
 									Toast.makeText(getApplicationContext(), "catch 2", Toast.LENGTH_SHORT).show();
 								}
 								Toast.makeText(getApplicationContext(), tit.getText().toString(), Toast.LENGTH_SHORT).show();
 								//	Toast.makeText(getApplicationContext(),tit.getText().toString(), Toast.LENGTH_SHORT).show();
-								map = new HashMap<String, Object>();
-								map.put("titre", tit.getText().toString());
-								map.put("place", pla.getText().toString());
-								i++;
-								list.add(map);
-								sa.notifyDataSetChanged();
-								lv.setAdapter(sa);
+
 
 								Notification.Builder builder = new Notification.Builder(getApplicationContext());
 								Notification notification = builder

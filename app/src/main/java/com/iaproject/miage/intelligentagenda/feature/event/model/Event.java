@@ -50,6 +50,10 @@ public class Event implements Comparable<Event>{
 			this.isDateEndStrongness = true;
 			this.isDateStartStrongness = true;
 		}
+		else {
+
+			throw new AddEventException();
+		}
 	}
 
 
