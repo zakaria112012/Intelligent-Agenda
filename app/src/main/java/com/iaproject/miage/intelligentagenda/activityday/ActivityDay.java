@@ -123,6 +123,7 @@ public class ActivityDay extends AppCompatActivity {
 								EditText pla = (EditText) view.findViewById(R.id.editTextPlace);
 								EditText start = (EditText) view.findViewById(R.id.editTextStart);
 								EditText end = (EditText) view.findViewById(R.id.editTextEnd);
+								EditText phone=(EditText)view.findViewById(R.id.editTextPhone);
 								CheckBox dForte = (CheckBox) view.findViewById(R.id.checkBoxStart);
 								CheckBox fForte = (CheckBox) view.findViewById(R.id.checkBoxeEnd);
 								boolean isDateStartStrongness = true;
@@ -144,7 +145,7 @@ public class ActivityDay extends AppCompatActivity {
 
 
 								try {
-									event = new Event(tit.getText().toString(), pla.getText().toString(), start.getText().toString(), end.getText().toString(), descrip.getText().toString(), isDateStartStrongness, isDateEndStrongness);
+									event = new Event(tit.getText().toString(), pla.getText().toString(), start.getText().toString(), end.getText().toString(), descrip.getText().toString(), isDateStartStrongness, isDateEndStrongness,phone.getText().toString());
 									daoDatabase = new daoDatabase();
 									daoDatabase.addEvent(event, agenda);
 								} catch (AddEventException e) {
@@ -188,17 +189,6 @@ public class ActivityDay extends AppCompatActivity {
 		sms.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
-				Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-				smsIntent.setData(Uri.parse("smsto:"));
-				smsIntent.setType("vnd.android-dir/mms-sms");
-				smsIntent.putExtra("address", new String("01234"));
-				smsIntent.putExtra("sms_body", "Test ");
-				try {
-					startActivity(smsIntent);
-					finish();
-				} catch (android.content.ActivityNotFoundException ex) {
-					Toast.makeText(ActivityDay.this, "SMS failded please try again later.", Toast.LENGTH_SHORT).show();
-				}
 
 			}
 
@@ -258,6 +248,28 @@ public class ActivityDay extends AppCompatActivity {
 
 				Builder1.setMessage("Votre evenement ")
 						.setView(view2)
+						.setPositiveButton("Send sms", new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialogInterface, int i) {
+
+								Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+								smsIntent.setData(Uri.parse("smsto:"));
+								smsIntent.setType("vnd.android-dir/mms-sms");
+								smsIntent.putExtra("address", new String(event.phone));
+								smsIntent.putExtra("sms_body", "Test ");
+								try {
+									startActivity(smsIntent);
+									finish();
+								} catch (android.content.ActivityNotFoundException ex) {
+									Toast.makeText(ActivityDay.this, "SMS failded please try again later.", Toast.LENGTH_SHORT).show();
+								}
+
+
+
+							}
+						})
+
 						.setNegativeButton("OK", null)
 						.setCancelable(false);
 				AlertDialog dialog = Builder1.create();

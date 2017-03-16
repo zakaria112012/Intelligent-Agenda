@@ -14,6 +14,7 @@ public class Event implements Comparable<Event>{
 
 	public String title;
 	public String description;
+	public String phone;
 	@Exclude
 	public GregorianCalendar dateStart;
 	@Exclude
@@ -26,20 +27,21 @@ public class Event implements Comparable<Event>{
 	@Exclude
 	public SimpleDateFormat sdf;
 
-	public Event(String title, String place, String startDate, String endDate, String description,Boolean isDateStartStrongness,Boolean isDateEndStrongness )
+	public Event(String title, String place, String startDate, String endDate, String description,Boolean isDateStartStrongness,Boolean isDateEndStrongness,String phone )
 
 			throws AddEventException, ParseException {
 
 		this.title = title;
 		this.place = place;
 		this.description = description;
+		this.phone=phone;
 		sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.isDateEndStrongness = isDateEndStrongness;
 		this.isDateStartStrongness = isDateStartStrongness;
 		Date dd = sdf.parse(startDate);
-		Date de = sdf.parse(startDate);
+		Date de = sdf.parse(endDate);
 		this.dateStart = new GregorianCalendar();
 		this.dateEnd = new GregorianCalendar();
 		this.dateStart.setTime(dd);

@@ -60,6 +60,17 @@
 
         <requestFocus />
     </EditText>
+    <EditText
+        android:id="@+id/editTextPhone"
+        android:textAlignment="center"
+        android:hint="Entrez votre numero téléphone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
 
     <CheckBox
         android:text="Date debut forte"
