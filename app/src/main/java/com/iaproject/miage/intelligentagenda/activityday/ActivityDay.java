@@ -73,6 +73,8 @@ public class ActivityDay extends AppCompatActivity {
 		lv.setAdapter(sa);
 		sa.notifyDataSetChanged();
 
+
+		// reste à developer pour pouvoir récuperer les données de Firebase
 	dref= FirebaseDatabase.getInstance().getReference();
 		dref.child("users").child(agenda.titleAgenda).child("event").addChildEventListener(new ChildEventListener() {
 			@Override
