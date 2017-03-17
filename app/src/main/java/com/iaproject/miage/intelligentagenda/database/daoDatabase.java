@@ -26,6 +26,7 @@ public class daoDatabase {
 
 
         FirebaseUser user=firebaseAuth.getCurrentUser();
+
         String key = databaseReference.child("event").push().getKey();
         databaseReference.child("users").child(user.getUid()).child(agenda.titleAgenda).child("event").child(key).setValue(event);
         agenda.addEvent(event);

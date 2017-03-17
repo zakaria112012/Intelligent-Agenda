@@ -22,7 +22,11 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.iaproject.miage.intelligentagenda.R;
 import com.iaproject.miage.intelligentagenda.database.daoDatabase;
 import com.iaproject.miage.intelligentagenda.exception.AddEventException;
@@ -62,15 +66,15 @@ public class ActivityDay extends AppCompatActivity {
 		agenda = Agenda.getInstance();
 
 		list = new ArrayList<>();
-		String[] from = new String[]{"titre", "place","start","end","despcription"};
-		int[] to = new int[]{R.id.activity_title_event, R.id.activity_place,R.id.activity_start,R.id.activity_end,R.id.activity_descrption};
+		String[] from = new String[]{"titre", "place","start","end","despcription","phone"};
+		int[] to = new int[]{R.id.activity_title_event, R.id.activity_place,R.id.activity_start,R.id.activity_end,R.id.activity_descrption,R.id.activity_phone};
 		sa = new SimpleAdapter(this, list, R.layout.list_event, from, to);
 		lv = (ListView) findViewById(R.id.listView);
 		lv.setAdapter(sa);
 		sa.notifyDataSetChanged();
 
-	/*	dref= FirebaseDatabase.getInstance().getReference();
-		dref.child("users").addChildEventListener(new ChildEventListener() {
+	dref= FirebaseDatabase.getInstance().getReference();
+		dref.child("users").child(agenda.titleAgenda).child("event").addChildEventListener(new ChildEventListener() {
 			@Override
 			public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 				Iterable<DataSnapshot> chiledren = dataSnapshot.getChildren();
@@ -83,7 +87,7 @@ public class ActivityDay extends AppCompatActivity {
 					map.put("start",ev.dateStart);
 					map.put("end",ev.dateEnd);
 					map.put("description",ev.description);
-
+					map.put("phone",ev.phone);
 					list.add(map);
 					sa.notifyDataSetChanged();
 					lv.setAdapter(sa);
@@ -103,7 +107,7 @@ public class ActivityDay extends AppCompatActivity {
 
 			}
 		});
-		*/
+
 
 		buttonAdd = (ImageButton) findViewById(R.id.activity_day_button_add);
 		buttonAdd.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +159,7 @@ public class ActivityDay extends AppCompatActivity {
 									list.add(map);
 									sa.notifyDataSetChanged();
 									lv.setAdapter(sa);
+									Toast.makeText(getApplicationContext(), tit.getText().toString(), Toast.LENGTH_SHORT).show();
 								} catch (AddEventException e) {
 									e.printStackTrace();
 									Toast.makeText(getApplicationContext(), "La date de début doit etre avant la date de fin  ", Toast.LENGTH_SHORT).show();
@@ -163,7 +168,7 @@ public class ActivityDay extends AppCompatActivity {
 									e.printStackTrace();
 									Toast.makeText(getApplicationContext(), "catch 2", Toast.LENGTH_SHORT).show();
 								}
-								Toast.makeText(getApplicationContext(), tit.getText().toString(), Toast.LENGTH_SHORT).show();
+
 								//	Toast.makeText(getApplicationContext(),tit.getText().toString(), Toast.LENGTH_SHORT).show();
 
 
@@ -196,7 +201,7 @@ public class ActivityDay extends AppCompatActivity {
 
 		});
 
-		final ImageButton phone = (ImageButton) findViewById(R.id.phone);
+		final ImageButton phone = (ImageButton)findViewById(R.id.phone);
 		phone.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View view) {
